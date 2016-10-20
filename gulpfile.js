@@ -35,8 +35,9 @@ const DATA_DIRS = LANGUAGES.reduce((prev, language) => {
     return prev;
 }, {});
 const STATIC = './static';
-const OUTPUT = './output';
-const OUTPUT_ROOT = OUTPUT + '/bem.info/';
+const OUTPUT = env.OUTPUT || './output';
+const DOMAIN = env.DOMAIN || 'bem.info'
+const OUTPUT_ROOT = OUTPUT + '/' + DOMAIN + '/';
 const OUTPUT_DIRS = LANGUAGES.reduce((prev, language) => {
     prev[language] = OUTPUT_ROOT + language;
     return prev;
@@ -86,7 +87,7 @@ function compilePages(lang, bundle) {
             static: STATIC,
             source: DATA_DIRS[lang],
             destination: OUTPUT_DIRS[lang],
-            destinationRoot: OUTPUT + (env.YENV === 'production' ? '/bem.info/static' : ''),
+            destinationRoot: OUTPUT + (env.YENV === 'production' ? '/' + DOMAIN + '/static' : ''),
             langs: LANGUAGES,
             sites: env.SITES ? env.SITES.split(',') : ['methodology', 'toolbox', 'platform', 'community'],
             lang,
@@ -134,9 +135,9 @@ function data() {
             env: {
                 GORSHOCHEK_CACHE_FOLDER: CACHE_DIRS[lang],
                 modelPath: modelPath,
-                host: `https://${lang}.bem.info`,
+                host: env.HOST || `https://${lang}.` + DOMAIN,
                 dest: DATA_DIRS[lang],
-                root: env.YENV === 'production' ? '' : '/bem.info/' + lang,
+                root: env.YENV === 'production' ? '' : '/' + DOMAIN + '/' + lang,
                 token: env.TOKEN,
                 DEBUG: env.DEBUG,
                 githubHosts: env.GITHUB_HOSTS
