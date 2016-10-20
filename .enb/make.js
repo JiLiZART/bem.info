@@ -38,6 +38,11 @@ var langs = ['ru', 'uk', 'en'],
 
 function configNodes(config, isProd, bundle, levels) {
     config.nodes(bundle, function(nodeConfig) {
+
+        if (process.env.BLOCKS) {
+            levels.push(process.env.BLOCKS);
+        }
+
         nodeConfig.addTechs([
             // essential
             [enbBemTechs.levels, { levels: libLevels.concat(levels) }],
